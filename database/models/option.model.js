@@ -5,13 +5,13 @@ const OPTION_TABLE = 'options';
 
 const OptionSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     value: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         get() {
             const newValue = this.getDataValue('value');
@@ -22,7 +22,7 @@ const OptionSchema = {
         }
     },
     propertyId: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         field: 'property_id',
         references: {
@@ -30,7 +30,7 @@ const OptionSchema = {
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     }
 }
 

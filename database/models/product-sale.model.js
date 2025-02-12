@@ -7,7 +7,7 @@ const   PRODUCT_SALE_TABLE = 'products_sales';
 const ProductSaleSchema = {
     productId: {
         field: 'product_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
             model: PRODUCT_TABLE,
@@ -18,7 +18,7 @@ const ProductSaleSchema = {
     },
     saleId: {
         field: 'sale_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
             model: SALE_TABLE,
@@ -28,11 +28,11 @@ const ProductSaleSchema = {
         onDelete: 'CASCADE'
     },
     quantity: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER(),
     },
     unitPrice: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DECIMAL(8,2),
         field: "unit_price"
     }

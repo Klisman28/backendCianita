@@ -4,22 +4,22 @@ const USER_TABLE = 'users';
 
 const UserSchema = {
   id: {
-    allowNull: false,
+    allowNull: true,
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.INTEGER
   },
   username: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.STRING,
     unique: true,
   },
   password: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.STRING
   },
   status: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.BOOLEAN,
     default: true,
     get() {
@@ -34,22 +34,22 @@ const UserSchema = {
   }
   },
   userableId: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     field: 'userable_id'
   },
   userableType: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.STRING,
     field: 'userable_type'
   },
   createdAt: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.DATE,
     field: 'created_at',
   },
   updatedAt: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.DATE,
     field: 'updated_at'
   }

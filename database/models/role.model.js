@@ -4,22 +4,22 @@ const ROLE_TABLE = 'roles';
 
 const RoleSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     name: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true,
     }
 }
 
 class Role extends Model {
-    // static associate() {
+     static associate() {
 
-    // }
+     }
 
     static config(sequelize) {
         return {

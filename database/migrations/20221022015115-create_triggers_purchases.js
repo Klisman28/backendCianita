@@ -1,22 +1,22 @@
+// migrations/XXXX-create_triggers_purchases.js
 'use strict';
 
 module.exports = {
   async up(queryInterface) {
-    queryInterface.sequelize.query(`CREATE OR REPLACE FUNCTION products_increment_stock() RETURNS TRIGGER
-    AS
-    $$
-    BEGIN
-        UPDATE products SET stock=stock+new.quantity WHERE id=new.product_id;
-        RETURN NEW;
-    END
-    $$ 
-    LANGUAGE plpgsql;
-    CREATE TRIGGER BI_products_purchases_increment_stock AFTER INSERT 
-    ON products_purchases FOR EACH ROW
-    EXECUTE PROCEDURE products_increment_stock();`);
+    await queryInterface.sequelize.query(`
+      CREATE TRIGGER BI_products_purchases_increment_stock
+      AFTER INSERT
+      ON products_purchases
+      FOR EACH ROW
+      UPDATE products
+        SET stock = stock + NEW.quantity
+        WHERE id = NEW.product_id;
+    `);
   },
 
-  async down(queryInterface, Sequelize) {
-    
+  async down(queryInterface) {
+    await queryInterface.sequelize.query(`
+      DROP TRIGGER IF EXISTS BI_products_purchases_increment_stock;
+    `);
   }
 };

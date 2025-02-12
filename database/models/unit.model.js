@@ -4,18 +4,18 @@ const UNIT_TABLE = 'units';
 
 const UnitSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     name: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true
     },
     symbol: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true
     }

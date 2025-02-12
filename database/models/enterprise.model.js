@@ -4,26 +4,26 @@ const ENTERPRISE_TABLE = 'enterprises';
 
 const EnterpriseSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     name: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
     },
     ruc: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true,
     },
     email: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
     },
     telephone: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
     },
     address: {

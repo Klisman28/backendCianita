@@ -6,13 +6,13 @@ const OPENING_TABLE = 'openings';
 
 const OpeningSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     initBalance: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DECIMAL(8,2),
         field: 'init_balance'
     },
@@ -22,7 +22,7 @@ const OpeningSchema = {
     },
     startDatetime: {
         field: 'start_datetime',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DATE,
     },
     endDatetime: {
@@ -30,31 +30,31 @@ const OpeningSchema = {
         type: DataTypes.DATE,
     },
     status: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         defaultValue: 0,
     },
     cashierId: {
         field: 'cashier_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
             model: CASHIER_TABLE,
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     },
     employeeId: {
         field: 'employee_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
             model: EMPPLOYEE_TABLE,
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     },
 }
 

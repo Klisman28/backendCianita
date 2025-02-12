@@ -8,18 +8,18 @@ const PRODUCT_TABLE = 'products';
 
 const ProductSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     sku: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true
     },
     name: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true
     },
@@ -29,23 +29,23 @@ const ProductSchema = {
     },
     cost: {
         type: DataTypes.DECIMAL(8,2),
-        allowNull: false
+        allowNull: true
     },
     utility: {
         type: DataTypes.DECIMAL(8,2),
-        allowNull: false
+        allowNull: true
     },
     price: {
         type: DataTypes.DECIMAL(8,2),
-        allowNull: false
+        allowNull: true
     },
     stock: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     stockMin: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         field: 'stock_min'
     },
     imageUrl: {
@@ -62,7 +62,7 @@ const ProductSchema = {
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     },
     subcategoryId: {
         field: 'subcategory_id',
@@ -73,7 +73,7 @@ const ProductSchema = {
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     },
     unitId: {
         field: 'unit_id',
@@ -84,7 +84,7 @@ const ProductSchema = {
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     },
     //descomentar despues de correr las migraciones
     // status: {

@@ -5,7 +5,7 @@ const SALE_TABLE = 'sales';
 
 const SaleSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
@@ -14,16 +14,16 @@ const SaleSchema = {
         type: DataTypes.STRING,
     },
     number: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING
     },
     dateIssue: {
         field: 'date_issue',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DATEONLY,
     },
     status: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         defaultValue: 0,
     },
@@ -37,24 +37,24 @@ const SaleSchema = {
     },
     openingId: {
         field: 'opening_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
             model: OPENING_TABLE,
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     },
     type: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING
     },
     igv: {
         type: DataTypes.DECIMAL(8, 2)
     },
     total: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DECIMAL(8, 2)
     }
 }

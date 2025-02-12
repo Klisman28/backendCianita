@@ -4,17 +4,17 @@ const SUPPLIER_TABLE = 'suppliers';
 
 const SupplierSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     name: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
     },
     ruc: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true,
     },
@@ -22,11 +22,11 @@ const SupplierSchema = {
         type: DataTypes.STRING,
     },
     email: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
     },
     telephone: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
     },
     address: {

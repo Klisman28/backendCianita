@@ -6,13 +6,13 @@ const SUBCATEGORY_TABLE = 'subcategories';
 
 const SubcategorySchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     name: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true,
         get() {
@@ -24,7 +24,7 @@ const SubcategorySchema = {
         }
     },
     code: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true
     },
@@ -60,7 +60,7 @@ const SubcategorySchema = {
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     }
 }
 

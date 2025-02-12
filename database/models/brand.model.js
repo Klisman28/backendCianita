@@ -5,18 +5,18 @@ const BRAND_TABLE = 'brands';
 
 const BrandSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     name: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true
     },
     code: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true
     },

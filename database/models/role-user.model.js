@@ -14,25 +14,25 @@ const RoleUserSchema =  {
   },
   roleId: {
     field: 'role_id',
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     references: {
-      model: ROLE_TABLE,
+      model: ROLE_TABLE, // 'roles'
       key: 'id'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    onDelete: 'CASCADE'
   },
   userId: {
     field: 'user_id',
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     references: {
-      model: USER_TABLE,
+      model: USER_TABLE, // 'users'
       key: 'id'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    onDelete: 'CASCADE'
   }
 }
 

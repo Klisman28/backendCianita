@@ -4,23 +4,23 @@ const CASHIER_TABLE = 'cashiers';
 
 const CashierSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     name: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true
     },
     code: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true
     },
     status: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         defaultValue: 0
     }

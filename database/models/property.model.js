@@ -5,13 +5,13 @@ const PROPERTY_TABLE = 'properties';
 
 const PropertySchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     name: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         get() {
             const newValue = this.getDataValue('name');
@@ -22,11 +22,11 @@ const PropertySchema = {
         }
     },
     searchable: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.BOOLEAN,
     },
     subcategoryId: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         field: 'subcategory_id',
         references: {
@@ -34,7 +34,7 @@ const PropertySchema = {
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     }
 }
 

@@ -7,7 +7,7 @@ const BRAND_SUBCATEGORY_TABLE = 'brands_subcategories';
 const BrandSubcategorySchema = {
     brandId: {
         field: 'brand_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
             model: BRAND_TABLE,
@@ -18,7 +18,7 @@ const BrandSubcategorySchema = {
     },
     subcategoryId: {
         field: 'subcategory_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
             model: SUBCATEGORY_TABLE,

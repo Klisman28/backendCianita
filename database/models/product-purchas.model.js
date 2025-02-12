@@ -7,7 +7,7 @@ const   PRODUCT_PURCHAS_TABLE = 'products_purchases';
 const ProductPurchasSchema = {
     productId: {
         field: 'product_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
             model: PRODUCT_TABLE,
@@ -18,7 +18,7 @@ const ProductPurchasSchema = {
     },
     purchasId: {
         field: 'purchas_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
             model: PURCHAS_TABLE,
@@ -28,11 +28,11 @@ const ProductPurchasSchema = {
         onDelete: 'CASCADE'
     },
     quantity: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER(),
     },
     unitCost: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DECIMAL(8,2),
         field: "unit_cost"
     }

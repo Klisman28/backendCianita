@@ -4,13 +4,13 @@ const EMPPLOYEE_TABLE = 'employees';
 
 const EmployeeSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     name: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         get() {
             const newValue = this.getDataValue('name');
@@ -21,7 +21,7 @@ const EmployeeSchema = {
         }
     },
     firstLastname: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         field: 'first_lastname',
         get() {
@@ -33,7 +33,7 @@ const EmployeeSchema = {
         }
     },
     secondLastname: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         field: 'second_lastname',
         get() {
@@ -45,11 +45,11 @@ const EmployeeSchema = {
         }
     },
     fullname: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
     },
     dni: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true,
     },

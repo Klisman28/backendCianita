@@ -36,7 +36,7 @@ require('./utils/auth');
 
 // Ruta principal
 app.get('/', (req, res) => {
-  res.send('hello !!!');
+  res.send('BAckend de Klisman');
 });
 
 // Rutas de la API
@@ -51,11 +51,11 @@ app.use(errorHandler);
 // Configuración de la base de datos con Sequelize
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
-  dialect: 'postgres',
+  dialect: 'mysql',
   port: process.env.DB_PORT,
   dialectOptions: {
     ssl: {
-      require: true,
+      require: false,
       rejectUnauthorized: false, // Evitar problemas de certificados no verificados
     },
   },
@@ -68,7 +68,7 @@ sequelize.authenticate()
 
     // Iniciar servidor solo si la conexión a la base de datos es exitosa
     app.listen(port, () => {
-      console.log('Servidor corriendo en el puerto', port);
+      console.log('Servidor corriendo en el puerto', 'http://localhost:'+port);
     });
   })
   .catch(err => {

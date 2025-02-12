@@ -6,7 +6,10 @@ const { OPENING_TABLE, OpeningSchema } = require("../models/opening.model");
 
 module.exports = {
   async up (queryInterface) {
-    await queryInterface.createTable(OPENING_TABLE, OpeningSchema)
+    await queryInterface.createTable(OPENING_TABLE, OpeningSchema, {
+      engine: 'InnoDB', // <--- Forzar motor
+
+    })
   },
 
   async down (queryInterface) {

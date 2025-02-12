@@ -1,27 +1,25 @@
+// migrations/xxxxxx-create_triggers_sales.js
 'use strict';
 
 module.exports = {
   async up(queryInterface) {
-    queryInterface.sequelize.query(`CREATE OR REPLACE FUNCTION products_decrement_stock() RETURNS TRIGGER
-    AS
-    $$
-    BEGIN
-        UPDATE products SET stock=stock-new.quantity WHERE id=new.product_id;
-        RETURN NEW;
-    END
-    $$ 
-    LANGUAGE plpgsql;
-    CREATE TRIGGER BI_products_sales_decrement_stock AFTER INSERT 
-    ON products_sales FOR EACH ROW
-    EXECUTE PROCEDURE products_decrement_stock();`);
+    // Si es solo una sentencia en el trigger:
+    await queryInterface.sequelize.query(`
+      CREATE TRIGGER BI_products_sales_decrement_stock
+      AFTER INSERT
+      ON products_sales
+      FOR EACH ROW
+      UPDATE products
+        SET stock = stock - NEW.quantity
+        WHERE id = NEW.product_id;
+    `);
   },
 
-  async down(queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-  }
+  async down(queryInterface) {
+    // para revertir el trigger
+    await queryInterface.sequelize.query(`
+      DROP TRIGGER IF EXISTS BI_products_sales_decrement_stock;
+    `);
+  },
 };
+

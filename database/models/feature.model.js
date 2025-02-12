@@ -7,7 +7,7 @@ const FEATURE_TABLE = 'features';
 
 const FeatureSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
@@ -16,7 +16,7 @@ const FeatureSchema = {
         type: DataTypes.STRING,
     },
     productId: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         field: 'product_id',
         references: {
@@ -27,7 +27,7 @@ const FeatureSchema = {
         onDelete: 'SET NULL'
     },
     propertyId: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         field: 'property_id',
         references: {
@@ -35,7 +35,7 @@ const FeatureSchema = {
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     },
     optionId: {
         allowNull: true,
@@ -46,7 +46,7 @@ const FeatureSchema = {
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     }
 }
 

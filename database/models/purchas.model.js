@@ -6,43 +6,43 @@ const PURCHAS_TABLE = 'purchases';
 
 const PurchasSchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     supplierId: {
         field: 'supplier_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
             model: SUPPLIER_TABLE,
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     },
     employeeId: {
         field: 'employee_id',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
             model: EMPPLOYEE_TABLE,
             key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
     },
     dateIssue: {
         field: 'date_issue',
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DATEONLY,
     },
     igv: {
         type: DataTypes.DECIMAL(8,2)
     },
     total: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.DECIMAL(8,2)
     }
 }

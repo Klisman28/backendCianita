@@ -5,13 +5,13 @@ const CATEGORY_TABLE = 'categories';
 
 const CategorySchema = {
     id: {
-        allowNull: false,
+        allowNull: true,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER
     },
     name: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true,
         get() {
@@ -23,7 +23,7 @@ const CategorySchema = {
         }
     },
     code: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING,
         unique: true
     },
