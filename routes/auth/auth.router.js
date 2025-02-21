@@ -12,6 +12,8 @@ router.post('/sing-in',
   async (req, res, next) => {
     try {
       const user = req.user;
+      console.log('Data de inicio',user);
+      
       const data = service.signToken(user);
       success(res, data, "Autenticación exitoso");
     } catch (error) {
