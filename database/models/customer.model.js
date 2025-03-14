@@ -51,7 +51,6 @@ const CustomerSchema = {
     dni: {
         allowNull: true,
         type: DataTypes.STRING,
-        unique: true,
     },
     email: {
         type: DataTypes.STRING,

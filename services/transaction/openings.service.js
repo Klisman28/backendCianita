@@ -16,20 +16,20 @@ class OpeningsService {
         const optionsCount = {};
 
         if (limit && offset) {
-            options.limit = limit;
-            options.offset = offset;
+            options.limit = parseInt(limit);
+            options.offset = parseInt(offset);
         }
 
         if (search) {
             options.where = {
                 id: {
-                    [Op.iLike]: `%${search}%`
+                    [Op.like]: `%${search}%`
                 }
             }
 
             optionsCount.where = {
                 id: {
-                    [Op.iLike]: `%${search}%`
+                    [Op.like]: `%${search}%`
                 }
             }
         }

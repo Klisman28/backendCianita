@@ -84,6 +84,14 @@ class Employee extends Model {
     //         foreignKey: 'categoryId'
     //     });
     // }
+    static associate(models) {
+        // hasOne polimórfico (se suele hacer constraints: false):
+        this.hasOne(models.User, {
+          as: 'user',
+          foreignKey: 'userableId',
+          constraints: false
+        });
+      }
 
     static config(sequelize) {
         return {

@@ -2,9 +2,9 @@ const Joi = require('joi');
 
 const id = Joi.number().integer();
 const name = Joi.string().min(3).max(100);
-const ruc = Joi.string().min(10).max(15);
+const ruc = Joi.string();
 const email = Joi.string().email();
-const telephone = Joi.string().min(9).max(15);
+const telephone = Joi.string();
 const address = Joi.string();
 
 const offset = Joi.number().integer();
@@ -15,8 +15,8 @@ const sortDirection = Joi.string();
 
 const createEnterpriseSchema = Joi.object({
     name: name.required(),
-    ruc: ruc.required(),
-    email: email.required(),
+    ruc,
+    email,
     telephone: telephone.required(),
     address
 });

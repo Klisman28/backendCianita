@@ -14,7 +14,7 @@ const sortDirection = Joi.string();
 const createCashierSchema = Joi.object({
     name: name.required(),
     status: status,
-    code: code.required()
+    code,
 });
 
 const getCashierSchema = Joi.object({

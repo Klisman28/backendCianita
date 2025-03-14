@@ -58,8 +58,8 @@ class SalesService {
         const optionsCount = { where: {} };
 
         if (limit && offset) {
-            options.limit = limit;
-            options.offset = offset;
+            options.limit = parseInt(limit);
+            options.offset = parseInt(offset);
         }
 
         if (filterField && filterType && filterValue) {

@@ -11,20 +11,20 @@ class CashiersService {
         const optionsCount = {};
 
         if (limit && offset) {
-            options.limit = limit;
-            options.offset = offset;
+            options.limit = parseInt(limit);
+            options.offset = parseInt(offset);
         }
 
         if (search) {
             options.where = {
                 name: {
-                    [Op.iLike]: `%${search}%`
+                    [Op.like]: `%${search}%`
                 }
             }
 
             optionsCount.where = {
                 name: {
-                    [Op.iLike]: `%${search}%`
+                    [Op.like]: `%${search}%`
                 }
             }
         }

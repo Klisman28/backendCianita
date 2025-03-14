@@ -41,28 +41,30 @@ class ProductsService {
             ],
             order: [(sortColumn) ? [sortColumn, sortDirection] : ['id', 'DESC']]
         }
-        const optionsCount = {};
+        const optionsCount = {where: {}};
 
         if (limit && offset) {
-            options.limit = limit;
-            options.offset = offset;
-        }
+            options.limit = parseInt(limit);
+            options.offset = parseInt(offset);
+          }
+          
 
         if (search) {
             options.where = {
                 ...options.where,
                 name: {
-                    [Op.iLike]: `%${search}%`
+                    [Op.like]: `%${search}%`
                 }
             }
 
             optionsCount.where = {
                 name: {
-                    [Op.iLike]: `%${search}%`
+                    [Op.like]: `%${search}%`
                 }
             }
         }
 
+        
         if (filterField && filterType && filterValue) {
             const data = this.addFilter(filterField, filterType, filterValue);
             if (data != null) {
@@ -86,35 +88,35 @@ class ProductsService {
     addFilter(filterField, filterType, filterValue) {
         switch (filterField) {
             case 'cost':
-                if (filterType != "iLike" && !isNaN(filterValue)) {
+                if (filterType != "like" && !isNaN(filterValue)) {
                     return {
                         [Op[filterType]]: parseFloat(filterValue)
                     }
                 }
                 return null;
             case 'price':
-                if (filterType != "iLike" && !isNaN(filterValue)) {
+                if (filterType != "like" && !isNaN(filterValue)) {
                     return {
                         [Op[filterType]]: parseFloat(filterValue)
                     }
                 }
                 return null;
             case 'stockMin':
-                if (filterType != "iLike" && !isNaN(filterValue)) {
+                if (filterType != "like" && !isNaN(filterValue)) {
                     return {
                         [Op[filterType]]: parseInt(filterValue)
                     }
                 }
                 return null;
             case 'stock':
-                if (filterType != "iLike" && !isNaN(filterValue)) {
+                if (filterType != "like" && !isNaN(filterValue)) {
                     return {
                         [Op[filterType]]: parseInt(filterValue)
                     }
                 }
                 return null;
             case 'status':
-                if (filterType == 'iLike') {
+                if (filterType == 'like') {
                     if ((filterValue.toLowerCase()) === 'activo') {
                         return {
                             [Op.eq]: 1
@@ -171,15 +173,15 @@ class ProductsService {
         }
 
         if (limit && offset) {
-            options.limit = limit;
-            options.offset = offset;
+            options.limit = parseInt(limit);
+            options.offset = parseInt(offset);
         }
 
         if (search) {
             options.where = {
                 ...options.where,
                 name: {
-                    [Op.iLike]: `%${search}%`
+                    [Op.like]: `%${search}%`
                 }
             }
         }
@@ -206,7 +208,7 @@ class ProductsService {
     async findOne(id) {
         const product = await models.Product.findByPk(id);
         if (!product) {
-            throw boom.notFound('No se encontro ningun product');
+            throw boom.notFound('No se encontro ningun producto');
         }
         return product;
     }

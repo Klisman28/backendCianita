@@ -69,6 +69,8 @@ router.put('/:id',
     async (req, res, next) => {
         try {
             const { id } = req.params;
+            console.log(req.params);
+            
             const body = req.body;
             const opening = await service.update(id, body);
             success(res, opening, 'Apertura actualizada con éxito');

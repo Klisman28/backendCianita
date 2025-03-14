@@ -27,20 +27,20 @@ class UsersService {
         const optionsCount = {};
 
         if (limit && offset) {
-            options.limit = limit;
-            options.offset = offset;
+            options.limit = parseInt(limit);
+            options.offset = parseInt(offset);
         }
 
         if (search) {
             options.where = {
                 username: {
-                    [Op.iLike]: `%${search}%`
+                    [Op.like]: `%${search}%`
                 }
             }
 
             optionsCount.where = {
                 username: {
-                    [Op.iLike]: `%${search}%`
+                    [Op.like]: `%${search}%`
                 }
             }
         }

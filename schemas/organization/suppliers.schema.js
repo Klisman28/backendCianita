@@ -2,10 +2,10 @@ const Joi = require('joi');
 
 const id = Joi.number().integer();
 const name = Joi.string().min(3).max(100);
-const ruc = Joi.string().min(10).max(15);
-const website = Joi.string().uri();
+const ruc = Joi.string();
+const website = Joi.string();
 const email = Joi.string().email();
-const telephone = Joi.string().min(9).max(15);
+const telephone = Joi.string();
 const address = Joi.string();
 
 const offset = Joi.number().integer();
@@ -16,10 +16,10 @@ const sortDirection = Joi.string();
 
 const createSupplierSchema = Joi.object({
     name: name.required(),
-    ruc: ruc.required(),
+    ruc,
     website,
-    email: email.required(),
-    telephone: telephone.required(),
+    email,
+    telephone,
     address
 });
 
