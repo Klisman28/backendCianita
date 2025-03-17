@@ -2,9 +2,9 @@ const Joi = require('joi');
 
 const id = Joi.number().integer();
 const name = Joi.string().min(3).max(100);
-const ruc = Joi.string();
+const ruc = Joi.string().allow('');       
 const website = Joi.string();
-const email = Joi.string().email();
+const email = Joi.string().email().allow(''); // Permite vacío para email
 const telephone = Joi.string();
 const address = Joi.string();
 
@@ -16,9 +16,9 @@ const sortDirection = Joi.string();
 
 const createSupplierSchema = Joi.object({
     name: name.required(),
-    ruc,
+    ruc, // Ya es opcional, pero se permite vacío con .allow('')
+    email, // Igual que arriba, permite vacío
     website,
-    email,
     telephone,
     address
 });
