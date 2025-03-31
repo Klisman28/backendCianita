@@ -79,6 +79,20 @@ router.put('/:id',
     }
 );
 
+router.put('/devolucion/:id',
+    validatorHandler(getSaleSchema, 'params'),
+    async (req, res, next) => {
+      try {
+        const { id } = req.params;
+        const sale = await service.returnSale(id);
+        success(res, sale, 'Devolución realizada con éxito');
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
+
+  
 router.delete('/:id',
     validatorHandler(getSaleSchema, 'params'),
     async (req, res, next) => {
