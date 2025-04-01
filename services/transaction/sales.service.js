@@ -3,150 +3,153 @@ const { Op } = require('sequelize');
 const { models } = require('../../libs/sequelize');
 
 class SalesService {
-  async find(query) {
-    const {
-      limit,
-      offset,
-      sortColumn,
-      sortDirection,
-      filterField,
-      filterType,
-      filterValue
-    } = query;
-
-    const options = {
-      where: {},
-      include: [
-        {
-          model: models.Product,
-          as: 'products',
-          attributes: ['id', 'name', 'sku'],
+    async find(query) {
+        const {
+          limit,
+          offset,
+          sortColumn,
+          sortDirection,
+          filterField,
+          filterType,
+          filterValue
+        } = query;
+      
+        const options = {
+          where: {},
           include: [
             {
-              model: models.Brand,
-              as: 'brand',
-              attributes: ['name']
+              model: models.Product,
+              as: 'products',
+              attributes: ['id', 'name', 'sku'],
+              include: [
+                {
+                  model: models.Brand,
+                  as: 'brand',
+                  attributes: ['name']
+                },
+                {
+                  model: models.Unit,
+                  as: 'unit',
+                  attributes: ['symbol']
+                }
+              ],
+              through: {
+                as: 'item',
+                attributes: ['quantity', 'unitPrice']
+              }
             },
             {
-              model: models.Unit,
-              as: 'unit',
-              attributes: ['symbol']
+              model: models.Opening,
+              as: 'opening',
+              attributes: [],
+              include: [
+                {
+                  model: models.Employee,
+                  as: 'employee',
+                  attributes: ['fullname', 'dni']
+                }
+              ]
+            },
+            {
+              model: models.Customer,
+              as: 'customer',
+              attributes: ['fullname', 'dni', 'email', 'telephone']
+            },
+            {
+              model: models.Enterprise,
+              as: 'enterprise',
+              attributes: ['name', 'ruc', 'email', 'telephone']
             }
           ],
-          through: {
-            as: 'item',
-            attributes: ['quantity', 'unitPrice']
-          }
-        },
-        {
-          model: models.Opening,
-          as: 'opening',
-          attributes: [],
+          order: (sortColumn)
+            ? [[sortColumn, sortDirection]]
+            : [['id', 'DESC']]
+        };
+      
+        const optionsCount = {
+          where: {},
           include: [
             {
-              model: models.Employee,
-              as: 'employee',
-              attributes: ['fullname', 'dni'],
+              model: models.Product,
+              as: 'products',
+              attributes: [],
+              through: {
+                as: 'item',
+                attributes: []
+              }
             }
           ]
-        },
-        {
-          model: models.Customer,
-          as: 'customer',
-          attributes: ['fullname', 'dni', 'email', 'telephone']
-        },
-        {
-          model: models.Enterprise,
-          as: 'enterprise',
-          attributes: ['name', 'ruc', 'email', 'telephone']
-        },
-      ],
-      order: [(sortColumn) ? [sortColumn, sortDirection] : ['id', 'DESC']]
-    };
-
-    const optionsCount = {
-      where: {},
-      include: [
-        {
-          model: models.Product,
-          as: 'products',
-          attributes: [],
-          through: {
-            as: 'item',
-            attributes: []
+        };
+      
+        if (limit && offset) {
+          options.limit = parseInt(limit);
+          options.offset = parseInt(offset);
+        }
+      
+        // ----------------------------------------------------------
+        // Lógica de filtrado
+        // ----------------------------------------------------------
+        if (filterField && filterValue) {
+          // Búsqueda en productos (nombre y/o sku)
+          if (filterField === 'product') {
+            // Busca tanto por nombre como por SKU
+            const searchCondition = {
+              [Op.or]: [
+                { name: { [Op.like]: `%${filterValue}%` } },
+                { sku: { [Op.like]: `%${filterValue}%` } }
+              ]
+            };
+            options.include[0].where = searchCondition;
+            optionsCount.include[0].where = searchCondition;
+          } else if (filterField === 'sku') {
+            // Busca solo por SKU
+            const searchCondition = {
+              sku: { [Op.like]: `%${filterValue}%` }
+            };
+            options.include[0].where = searchCondition;
+            optionsCount.include[0].where = searchCondition;
+          } else if (filterField === 'name') {
+            // Busca solo por nombre
+            const searchCondition = {
+              name: { [Op.like]: `%${filterValue}%` }
+            };
+            options.include[0].where = searchCondition;
+            optionsCount.include[0].where = searchCondition;
+          } else {
+            // Filtros para otros campos de la tabla Sales
+            const data = this.addFilter(filterField, filterType, filterValue);
+            if (data !== null) {
+              options.where = { ...options.where, [filterField]: data };
+              optionsCount.where = { ...optionsCount.where, [filterField]: data };
+            }
           }
         }
-      ]
-    };
-
-    if (limit && offset) {
-      options.limit = parseInt(limit);
-      options.offset = parseInt(offset);
-    }
-
-    // ----------------------------------------------------------
-    // Lógica para filtrar por campos específicos de la tabla Sales
-    // y para filtrar por nombre o SKU (código de barra) del producto.
-    // ----------------------------------------------------------
-    if (filterField && filterType && filterValue) {
-      // Si el filtro está relacionado a los productos (búsqueda por nombre o sku),
-      // en lugar de aplicarlo al "where" de Sales, lo aplicamos al "where" del include de Products.
-      if (filterField === 'product') {
-        // Por ejemplo, filterField= 'product', filterType='iLike', filterValue='loBuscado'
-        if (filterType === 'iLike') {
-          options.include[0].where = {
-            [Op.or]: [
-              { name: { [Op.iLike]: `%${filterValue}%` } },
-              { sku: { [Op.iLike]: `%${filterValue}%` } },
-            ]
-          };
-          optionsCount.include[0].where = {
-            [Op.or]: [
-              { name: { [Op.iLike]: `%${filterValue}%` } },
-              { sku: { [Op.iLike]: `%${filterValue}%` } },
-            ]
-          };
-        }
-      } else {
-        // Si el filtro es para otros campos de Sales, usamos el método addFilter
-        const data = this.addFilter(filterField, filterType, filterValue);
-        if (data !== null) {
-          options.where = {
-            ...options.where,
-            [filterField]: data
-          };
-          optionsCount.where = {
-            ...optionsCount.where,
-            [filterField]: data
-          };
-        }
+      
+        const sales = await models.Sale.findAll(options);
+        const total = await models.Sale.count(optionsCount);
+      
+        return { sales, total };
       }
-    }
-
-    const sales = await models.Sale.findAll(options);
-    const total = await models.Sale.count(optionsCount);
-
-    return { sales, total };
-  }
+      
 
   addFilter(filterField, filterType, filterValue) {
     switch (filterField) {
       case 'total':
-        if (filterType !== "iLike" && !isNaN(filterValue)) {
+        if (filterType !== "like" && !isNaN(filterValue)) {
           return {
             [Op[filterType]]: parseFloat(filterValue)
           };
         }
         return null;
       case 'igv':
-        if (filterType !== "iLike" && !isNaN(filterValue)) {
+        if (filterType !== "like" && !isNaN(filterValue)) {
           return {
             [Op[filterType]]: parseFloat(filterValue)
           };
         }
         return null;
       case 'saleableType':
-        if (filterType === 'iLike') {
+        if (filterType === 'like') {
           const newFilterValue = filterValue.toLowerCase();
           if (newFilterValue === 'boleta') {
             return {
@@ -164,7 +167,7 @@ class SalesService {
         }
         return null;
       case 'status':
-        if (filterType === 'iLike') {
+        if (filterType === 'like') {
           if ((filterValue.toLowerCase()) === 'activo') {
             return {
               [Op.eq]: 1

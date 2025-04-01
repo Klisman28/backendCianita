@@ -180,9 +180,10 @@ class ProductsService {
         if (search) {
             options.where = {
                 ...options.where,
-                name: {
-                    [Op.like]: `%${search}%`
-                }
+                [Op.or]: [
+                  { name: { [Op.like]: `%${search}%` } },
+                  { sku:  { [Op.like]: `%${search}%` } }
+                ]
             }
         }
 
