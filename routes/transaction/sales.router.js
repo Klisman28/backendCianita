@@ -79,7 +79,7 @@ router.put('/:id',
     }
 );
 
-router.put('/devolucion/:id',
+router.put('/:id',
     validatorHandler(getSaleSchema, 'params'),
     async (req, res, next) => {
       try {

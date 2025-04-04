@@ -1,6 +1,6 @@
 const boom = require('@hapi/boom');
 const { Op } = require('sequelize');
-const { models } = require('../../libs/sequelize');
+const {sequelize,Sequelize, models } = require('../../libs/sequelize');
 
 class SalesService {
     async find(query) {
@@ -323,39 +323,92 @@ class SalesService {
   }
 
   async delete(id) {
+    // Primero, encontramos la venta por ID
     const sale = await this.findOne(id);
-    await sale.destroy();
-    return { id };
+  
+    // Verificamos si la venta tiene productos
+    if (sale.products && sale.products.length > 0) {
+      console.log(`Productos asociados a la venta con ID ${id}: ${sale.products.length} productos.`);
+    }
+  
+    // Creamos la transacción
+    const t = await sequelize.transaction();
+    console.log(`Transacción creada: ${t}.`);
+  
+    try {
+      // Restauramos el stock de cada producto (si hay productos)
+      if (sale.products && sale.products.length > 0) {
+        for (const product of sale.products) {
+          const quantity = product.item.quantity;
+          console.log(`Restaurando stock para el producto con ID ${product.id}, sumando ${quantity} unidades al stock actual.`);
+  
+          await models.Product.update(
+            { stock: Sequelize.literal(`stock + ${quantity}`) },
+            { where: { id: product.id }, transaction: t }
+          );
+        }
+      }
+  
+      // Luego destruimos la venta dentro de la misma transacción
+      await sale.destroy({ transaction: t });
+      console.log(`Venta con ID ${id} eliminada.`);
+  
+      // Hacemos commit de todos los cambios
+      await t.commit();
+      console.log(`Transacción completada exitosamente.`);
+  
+      // Retornamos el ID de la venta eliminada
+      return { id };
+      
+    } catch (error) {
+      // Si algo falla, hacemos rollback y lanzamos el error
+      await t.rollback();
+      console.error(`Error al eliminar la venta con ID ${id}: ${error.message}`);
+      throw error;
+    }
   }
+  
 
   async returnSale(id) {
     const t = await models.sequelize.transaction();
     try {
+      console.log(`Iniciando la devolución de la venta con ID: ${id}`);
+      
       const sale = await this.findOne(id);
-
+      console.log(`Venta encontrada: ${JSON.stringify(sale)}`);
+  
       if (sale.status === 2) {
+        console.log(`La venta con ID ${id} ya ha sido devuelta`);
         throw boom.conflict('La venta ya ha sido devuelta');
       }
-
+  
+      console.log(`Actualizando estado de la venta a 'devuelta' para la venta con ID ${id}`);
       const updatedSale = await sale.update({ status: 2 }, { transaction: t });
-
+  
       if (sale.products && sale.products.length > 0) {
+        console.log(`Productos asociados a la venta con ID ${id}: ${sale.products.length} productos.`);
+        
         for (const product of sale.products) {
           const quantity = product.item.quantity;
+          console.log(`Actualizando stock para el producto con ID ${product.id}, aumentando ${quantity} unidades al stock actual.`);
+          
           await models.Product.update(
             { stock: models.Sequelize.literal(`stock + ${quantity}`) },
             { where: { id: product.id }, transaction: t }
           );
         }
       }
-
+  
       await t.commit();
+      console.log(`Transacción completada con éxito para la venta con ID ${id}`);
       return updatedSale;
     } catch (error) {
+      console.error(`Error al procesar la devolución para la venta con ID ${id}: ${error.message}`);
       await t.rollback();
       throw error;
     }
   }
+  
 }
 
 module.exports = SalesService;
