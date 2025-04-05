@@ -21,6 +21,7 @@ const { ProductSale, ProductSaleSchema } = require('./product-sale.model');
 const { Cashier, CashierSchema } = require('./cashier.model');
 const { Opening, OpeningSchema } = require('./opening.model');
 const { Config, ConfigSchema } = require('./config.model');
+const {Note, NoteSchema} = require('./note.model')
 
 function setupModels(sequelize) {
     // Inicializations
@@ -47,6 +48,8 @@ function setupModels(sequelize) {
     Sale.init(SaleSchema, Sale.config(sequelize));
     ProductSale.init(ProductSaleSchema, ProductSale.config(sequelize));
     Config.init(ConfigSchema, Config.config(sequelize));
+    Note.init(NoteSchema, Note.config(sequelize));
+
 
     // Associations
     Category.associate(sequelize.models);
@@ -66,6 +69,8 @@ function setupModels(sequelize) {
     Category.slugify(sequelize.models);
     Subcategory.slugify(sequelize.models);
     Product.slugify(sequelize.models);
+    Note.associate(sequelize.models);
+
 }
 
 module.exports = setupModels;
