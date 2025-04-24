@@ -15,6 +15,11 @@ const NoteSchema = {
     allowNull: true,
     type: DataTypes.STRING,
   },
+  completed: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false, // Por defecto la nota está pendiente
+  },
   createdAt: {
     allowNull: true,
     type: DataTypes.DATE,

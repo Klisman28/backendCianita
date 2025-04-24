@@ -23,6 +23,7 @@ const customersRouter = require('./client/customers.router');
 const enterprisesRouter = require('./client/enterprises.router');
 
 const { checkRoles } = require('../middlewares/auth.handler');
+const notesRouter = require('./notes/notes.router')
 
 function apiRouter(app) {
     const router = express.Router();
@@ -118,6 +119,13 @@ function apiRouter(app) {
         checkRoles('cajero', 'admin'),
         configsRouter
     );
+
+    router.use('/notes', passport.authenticate('jwt',
+        { session: false }),
+        checkRoles('cajero', 'admin'),
+        notesRouter
+    );
+
 
     router.use('/users', usersRouter);
     router.use('/auth', authRouter);

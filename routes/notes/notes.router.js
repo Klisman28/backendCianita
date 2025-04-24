@@ -9,6 +9,7 @@ const {
   const { success } = require('../response');
 
 const router = express.Router();
+const service = new NotesService();
 
 
 // ===================================
