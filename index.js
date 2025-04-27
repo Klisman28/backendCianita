@@ -9,9 +9,14 @@ const app = express();
 const port = 3000;
 
 // Lista de orígenes permitidos
-const allowedOrigins = ['http://localhost:3005','http://localhost:3000',
-  'http://192.168.1.48:3005', 'https://backendcianita.onrender.com', 
-  'https://main.d7drqxc8d92jq.amplifyapp.com/', 'https://www.cianitasublimados.com']; // Cambia 'http://localhost:3005' a la URL de tu frontend
+const allowedOrigins = [
+  'http://localhost:3005',
+  'http://localhost:3000',
+  'http://192.168.1.48:3005', 
+  'https://main.d7drqxc8d92jq.amplifyapp.com',
+  'https://backendcianita.onrender.com', 
+  'https://main.d7drqxc8d92jq.amplifyapp.com/', 
+  'https://www.cianitasublimados.com']; // Cambia 'http://localhost:3005' a la URL de tu frontend
 
 // Opciones de configuración de CORS
 const corsOptions = {
