@@ -8,7 +8,8 @@ require('dotenv').config(); // Cargar las variables de entorno
 const app = express();
 const port = 3000;
 
-// Lista de orígenes permitidos
+// Lista de orígenes permitidos sdfas
+// Se agregan url del CORS 
 const allowedOrigins = [
   'http://localhost:3005',
   'http://localhost:3000',
