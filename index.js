@@ -38,7 +38,7 @@ require('./utils/auth');
 
 // Ruta principal
 app.get('/', (req, res) => {
-  res.send('BAckend de Klisman');
+  res.send('BAckend de Klisman ');
 });
 
 // Rutas de la API
