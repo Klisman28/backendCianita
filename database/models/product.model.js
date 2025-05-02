@@ -53,6 +53,15 @@ const ProductSchema = {
         type: DataTypes.STRING,
         field: 'image_url'
     },
+    expirationDate: {
+        allowNull: true,
+        type: DataTypes.DATEONLY,
+        field: 'expiration_date'
+      },
+    hasExpiration: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
     brandId: {
         field: 'brand_id',
         allowNull: false,
@@ -86,6 +95,7 @@ const ProductSchema = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
     },
+
     //descomentar despues de correr las migraciones
     // status: {
     //     type: DataTypes.VIRTUAL,

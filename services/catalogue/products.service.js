@@ -41,13 +41,13 @@ class ProductsService {
             ],
             order: [(sortColumn) ? [sortColumn, sortDirection] : ['id', 'DESC']]
         }
-        const optionsCount = {where: {}};
+        const optionsCount = { where: {} };
 
         if (limit && offset) {
             options.limit = parseInt(limit);
             options.offset = parseInt(offset);
-          }
-          
+        }
+
 
         if (search) {
             options.where = {
@@ -64,7 +64,7 @@ class ProductsService {
             }
         }
 
-        
+
         if (filterField && filterType && filterValue) {
             const data = this.addFilter(filterField, filterType, filterValue);
             if (data != null) {
@@ -84,6 +84,26 @@ class ProductsService {
 
         return { products, total };
     }
+
+    async findExpiringSoon() {
+        const products = await models.Product.findAll({
+            where: {
+                expirationDate: {
+                    [Op.between]: [
+                        Sequelize.literal('CURRENT_DATE'),
+                        Sequelize.literal("CURRENT_DATE + interval \'7 day\'")
+                    ]
+                }
+            },
+            include: [
+                { model: models.Brand, as: 'brand', attributes: ['name'] },
+                { model: models.Subcategory, as: 'subcategory', attributes: ['name'] },
+                { model: models.Unit, as: 'unit', attributes: ['symbol'] }
+            ],
+            order: [['expirationDate', 'ASC']]
+        });
+    }
+
 
     addFilter(filterField, filterType, filterValue) {
         switch (filterField) {
@@ -108,6 +128,9 @@ class ProductsService {
                     }
                 }
                 return null;
+            case 'expirationDate':
+                // soporta eq, lt, gt, lte, gte, between…
+                return { [Op[filterType]]: filterValue };   // filterValue = '2025‑05‑01'
             case 'stock':
                 if (filterType != "like" && !isNaN(filterValue)) {
                     return {
@@ -181,8 +204,8 @@ class ProductsService {
             options.where = {
                 ...options.where,
                 [Op.or]: [
-                  { name: { [Op.like]: `%${search}%` } },
-                  { sku:  { [Op.like]: `%${search}%` } }
+                    { name: { [Op.like]: `%${search}%` } },
+                    { sku: { [Op.like]: `%${search}%` } }
                 ]
             }
         }
@@ -192,8 +215,10 @@ class ProductsService {
         return products;
     }
 
+
     async create(data) {
-        const product = await models.Product.create(data);
+        let productData = { ...data };  // Asegúrate de inicializar correctamente los datos del producto
+
         // if (data.features && data.features.length > 0) {
         //     const features = data.features.map((feature) => {
         //         return {
@@ -203,6 +228,15 @@ class ProductsService {
         //     });
         //     await models.Feature.bulkCreate(features);
         // }
+          // Asegurarse de que expirationDate solo se guarde si hasExpiration es true
+          if (data.hasExpiration && data.expirationDate) {
+            productData.expirationDate = data.expirationDate;
+        } else {
+            productData.expirationDate = null;
+        }
+
+        // Crear el producto en la base de datos
+        const product = await models.Product.create(productData);
         return product;
     }
 
@@ -216,6 +250,12 @@ class ProductsService {
 
     async update(id, changes) {
         let product = await this.findOne(id);
+         // Asegurarse de que expirationDate solo se guarde si hasExpiration es true
+         if (changes.hasExpiration && changes.expirationDate) {
+            changes.expirationDate = changes.expirationDate;
+        } else {
+            changes.expirationDate = '';
+        }
         product = await product.update(changes);
         // await models.Feature.destroy({
         //     where: {
