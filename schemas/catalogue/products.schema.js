@@ -37,7 +37,7 @@ const createProductSchema = Joi.object({
   expirationDate: Joi.when('hasExpiration', {
     is: true,
     then: Joi.date().iso().required(),
-    otherwise: Joi.string().allow('').optional(),  // Permite una cadena vacía cuando no tiene expiración
+    otherwise: Joi.alternatives().try(Joi.string().allow(''), Joi.valid(null)).optional()
   }),
   imageUrl: Joi.string().uri().allow('').optional(), // Esto permite null y cadenas vacías
   brandId: brandId.required(),
@@ -45,7 +45,11 @@ const createProductSchema = Joi.object({
   unitId: unitId.required(),
   hasExpiration: Joi.boolean().optional(),  // Permitir `hasExpiration`
   img: Joi.string().allow('').optional(),             // Asegúrate de permitir `img` si es necesario
-  imgList: Joi.array().items(Joi.string()).optional(),  // Permite `imgList` como un arreglo de cadenas
+  imgList: Joi.array().items(Joi.object({
+    id: Joi.string().required(),
+    name: Joi.string().required(),
+    img: Joi.string().uri().required()
+})).optional()  // Permite `imgList` como un arreglo de cadenas
   // features: features
 });
 
@@ -61,15 +65,27 @@ const updateProductSchema = Joi.object({
   expirationDate: Joi.when('hasExpiration', {
     is: true,
     then: Joi.date().iso().required(),
-    otherwise: Joi.string().allow(null).optional() // Si hasExpiration es false, expirationDate puede ser una cadena vacía o no proporcionarse
+    otherwise: Joi.alternatives().try(Joi.string().allow(''), Joi.valid(null)).optional()
   }),
   hasExpiration: Joi.boolean().optional(),  // Permitir `hasExpiration`
-  imageUrl: Joi.string().uri().allow(null).optional(), // Esto permite null y cadenas vacías
+  imageUrl: Joi.alternatives().try(
+    Joi.string().uri().allow(''),
+    Joi.valid(null)
+  ).optional(),
+  
   brandId: brandId,
   subcategoryId: subcategoryId,
   unitId: unitId,
-  features: features
-});
+  features: features,
+  imgList: Joi.array().items(
+    Joi.object({
+      id:   Joi.string().required(),
+      name: Joi.string().required(),
+      // blob:… es una URI válida, por eso solo validamos que sea string
+      img:  Joi.string().required()
+    })
+  ).optional()
+}).unknown(false);
 
 const getProductSchema = Joi.object({
   id: id.required(),
