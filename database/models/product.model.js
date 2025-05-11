@@ -56,11 +56,15 @@ const ProductSchema = {
     expirationDate: {
         allowNull: true,
         type: DataTypes.DATEONLY,
-        field: 'expiration_date'
+        field: 'expirationDate'
       },
     hasExpiration: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+    },
+     description: { 
+        type: DataTypes.TEXT,  
+        allowNull: true,  
     },
     brandId: {
         field: 'brand_id',

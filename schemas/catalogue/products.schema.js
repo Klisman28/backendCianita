@@ -49,7 +49,9 @@ const createProductSchema = Joi.object({
     id: Joi.string().required(),
     name: Joi.string().required(),
     img: Joi.string().uri().required()
-})).optional()  // Permite `imgList` como un arreglo de cadenas
+  })).optional(),  // Permite `imgList` como un arreglo de cadenas
+  description: Joi.string().allow('').optional(),  // Campo descripción opcional
+
   // features: features
 });
 
@@ -72,17 +74,18 @@ const updateProductSchema = Joi.object({
     Joi.string().uri().allow(''),
     Joi.valid(null)
   ).optional(),
-  
+
   brandId: brandId,
   subcategoryId: subcategoryId,
   unitId: unitId,
   features: features,
+  description: Joi.string().allow('').optional(),  // Campo descripción opcional
   imgList: Joi.array().items(
     Joi.object({
-      id:   Joi.string().required(),
+      id: Joi.string().required(),
       name: Joi.string().required(),
       // blob:… es una URI válida, por eso solo validamos que sea string
-      img:  Joi.string().required()
+      img: Joi.string().required()
     })
   ).optional()
 }).unknown(false);

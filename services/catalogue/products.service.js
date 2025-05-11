@@ -228,11 +228,14 @@ class ProductsService {
         //     });
         //     await models.Feature.bulkCreate(features);
         // }
-          // Asegurarse de que expirationDate solo se guarde si hasExpiration es true
-          if (data.hasExpiration && data.expirationDate) {
+        // Asegurarse de que expirationDate solo se guarde si hasExpiration es true
+        if (data.hasExpiration && data.expirationDate) {
             productData.expirationDate = data.expirationDate;
         } else {
             productData.expirationDate = null;
+        }
+        if (data.description) {
+            productData.description = data.description;
         }
 
         // Crear el producto en la base de datos
@@ -250,11 +253,14 @@ class ProductsService {
 
     async update(id, changes) {
         let product = await this.findOne(id);
-         // Asegurarse de que expirationDate solo se guarde si hasExpiration es true
-         if (changes.hasExpiration && changes.expirationDate) {
+        // Asegurarse de que expirationDate solo se guarde si hasExpiration es true
+        if (changes.hasExpiration && changes.expirationDate) {
             changes.expirationDate = changes.expirationDate;
         } else {
             changes.expirationDate = '';
+        }
+        if (changes.description) {
+            changes.description = changes.description;
         }
         product = await product.update(changes);
         // await models.Feature.destroy({
