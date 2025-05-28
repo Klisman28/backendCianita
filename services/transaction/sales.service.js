@@ -185,19 +185,47 @@ class SalesService {
   }
 
   async create(data) {
-    const sale = await models.Sale.create(data);
-    if (data.products && data.products.length > 0) {
-      data.products.forEach(async (item) => {
-        const product = await models.Product.findByPk(item.productId);
-        await sale.addProduct(product, {
-          through: {
-            quantity: item.quantity,
-            unitPrice: item.unitPrice
-          }
-        });
-      });
-    }
-    return sale;
+    return await sequelize.transaction(async (t) => {
+      // 1. Obtener configuración actual
+      const config = await models.Config.findOne({ transaction: t });
+      if (!config) {
+        throw boom.notFound('No se encontró configuración para tickets');
+      }
+
+      // 2. Si es venta tipo Ticket, asignar y formatear número
+      if (data.type === 'Ticket') {
+        // padStart con la longitud actual de ticketNum en dígitos
+        const digitCount = String(config.ticketNum).length;
+        data.number = String(config.ticketNum).padStart(digitCount, '0');
+      }
+
+      // 3. Crear la venta
+      const sale = await models.Sale.create(data, { transaction: t });
+
+      // 4. Asociar productos (manteniendo tu lógica actual)
+      if (data.products && data.products.length > 0) {
+        for (const item of data.products) {
+          const product = await models.Product.findByPk(item.productId, { transaction: t });
+          await sale.addProduct(product, {
+            through: {
+              quantity:   item.quantity,
+              unitPrice:  item.unitPrice
+            },
+            transaction: t
+          });
+        }
+      }
+
+      // 5. Incrementar el contador ticketNum en Config
+      if (data.type === 'Ticket') {
+        await config.update(
+          { ticketNum: config.ticketNum + 1 },
+          { transaction: t }
+        );
+      }
+
+      return sale;
+    });
   }
 
   async findByOpening(openingId) {

@@ -125,6 +125,12 @@ function apiRouter(app) {
         checkRoles('cajero', 'admin'),
         notesRouter
     );
+    router.use('/tickets', passport.authenticate('jwt',
+        { session: false }),
+        checkRoles('cajero', 'admin'),
+        notesRouter
+    );
+
 
 
     router.use('/users', usersRouter);
