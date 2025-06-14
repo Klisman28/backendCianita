@@ -19,7 +19,7 @@ console.log('DB_USERNAME encoded: ', USER);
 console.log('DB_PASSWORD encoded: ', PASSWORD);
 
 // 4. Construcción y log de la URI final
-const URI = `mysql://${USER}:${PASSWORD}@${HOST}:${PORT}/${DB_NAME}?ssl=false`;
+const URI = `mysql://${USER}:${PASSWORD}@${HOST}:${PORT}/${DB_NAME}`;
 console.log('Database URI: ', URI);
 
 module.exports = {
