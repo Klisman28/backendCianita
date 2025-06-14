@@ -63,8 +63,10 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
   dialectModule: require('mysql2'),
   port: process.env.DB_PORT,
   dialectOptions: {
-    ssl:false,
-    logging: msg => console.log('[SQL]', msg)
+ ssl: {
+        rejectUnauthorized: false, // aunque no se use SSL, esto evita errores cuando se intenta forzar
+      },
+          logging: msg => console.log('[SQL]', msg)
   },
 });
 
