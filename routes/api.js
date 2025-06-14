@@ -56,7 +56,7 @@ function apiRouter(app) {
 
     router.use('/products', passport.authenticate('jwt',
         { session: false }),
-        checkRoles('almacenero', 'admin'),
+        checkRoles('almacenero','cajero','admin'),
         productsRouter
     );
 
