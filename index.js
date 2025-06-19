@@ -17,6 +17,7 @@ const allowedOrigins = [
   'https://main.d7drqxc8d92jq.amplifyapp.com',
   'https://backendcianita.onrender.com', 
   'https://main.d7drqxc8d92jq.amplifyapp.com/', 
+  'http://167.99.12.34:3000',
   'https://www.cianitasublimados.com']; // Cambia 'http://localhost:3005' a la URL de tu frontend
 
 // Opciones de configuración de CORS
