@@ -13,15 +13,15 @@ const port = 3000;
 const allowedOrigins = [
   'http://localhost:3005',
   'http://localhost:3000',
-  'http://192.168.1.48:3005', 
+  'http://192.168.1.48:3005',
   'https://main.d7drqxc8d92jq.amplifyapp.com',
-  'https://backendcianita.onrender.com', 
-  'https://main.d7drqxc8d92jq.amplifyapp.com/', 
+  'https://backendcianita.onrender.com',
+  'https://main.d7drqxc8d92jq.amplifyapp.com/',
   'http://146.190.127.243:3000',
   'https://www.cianitasublimados.com',
-'https://www.tiendapalacios.shop',
-'https://tiendapalacios.shop',
-'https://main.d25p6d7aymkhrx.amplifyapp.com'
+  'https://www.tiendapalacios.shop',
+  'https://tiendapalacios.shop',
+  'https://main.d25p6d7aymkhrx.amplifyapp.com',
 ]; // Cambia 'http://localhost:3005' a la URL de tu frontend
 
 // Opciones de configuración de CORS
@@ -68,10 +68,10 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
   dialectModule: require('mysql2'),
   port: process.env.DB_PORT,
   dialectOptions: {
- ssl: {
-        rejectUnauthorized: false, // aunque no se use SSL, esto evita errores cuando se intenta forzar
-      },
-          logging: msg => console.log('[SQL]', msg)
+    ssl: {
+      rejectUnauthorized: false, // aunque no se use SSL, esto evita errores cuando se intenta forzar
+    },
+    logging: msg => console.log('[SQL]', msg)
   },
 });
 
@@ -82,7 +82,7 @@ sequelize.authenticate()
 
     // Iniciar servidor solo si la conexión a la base de datos es exitosa
     app.listen(port, () => {
-      console.log('Servidor corriendo en el puerto', 'http://localhost:'+port);
+      console.log('Servidor corriendo en el puerto', 'http://localhost:' + port);
     });
   })
   .catch(err => {
