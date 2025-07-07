@@ -21,6 +21,7 @@ const allowedOrigins = [
   'https://www.cianitasublimados.com',
 'https://www.tiendapalacios.shop',
 'https://tiendapalacios.shop',
+'https://main.d25p6d7aymkhrx.amplifyapp.com'
 ]; // Cambia 'http://localhost:3005' a la URL de tu frontend
 
 // Opciones de configuración de CORS
