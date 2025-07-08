@@ -58,21 +58,27 @@ class UsersService {
 
     async create(data) {
         const hash = await bcrypt.hash(data.password, 10);
-        const user = await models.User.create({
+
+        const userData = {
             ...data,
-            password: hash
-        });
+            password: hash,
+            userableId: data.userableId ?? null,
+            userableType: data.userableType ?? null
+        };
+
+        const user = await models.User.create(userData);
 
         if (data.roles && data.roles.length > 0) {
-            data.roles.forEach(async (id) => {
+            for (const id of data.roles) {
                 const role = await models.Role.findByPk(id);
                 await user.addRole(role);
-            });
+            }
         }
 
         delete user.dataValues.password;
         return user;
     }
+
 
     async addRole(data) {
         const res = await models.RoleUser.create(data);

@@ -19,8 +19,8 @@ const createUserSchema = Joi.object({
     username: username.required(),
     password: password.required(),
     status: status.required(),
-    userableId: userableId.required(),
-    userableType: userableType.required(),
+    userableId,
+    userableType,
     passwordConfirmation: passwordConfirmation,
     roles: roles.required()
 });
