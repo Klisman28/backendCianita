@@ -52,6 +52,10 @@ app.get('/', (req, res) => {
   res.send('BAckend de Klisman ');
 });
 
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date() });
+});
+
 // Rutas de la API
 apiRouter(app);
 
