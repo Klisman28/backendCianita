@@ -7,7 +7,7 @@ const AuthService = require('../../services/auth/auth.service');
 const router = express.Router();
 const service = new AuthService();
 
-router.post('/sing-in',
+router.post('/sign-in',
   passport.authenticate('local', {session: false}),
   async (req, res, next) => {
     try {
