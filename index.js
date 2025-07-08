@@ -18,6 +18,7 @@ const allowedOrigins = [
   'https://backendcianita.onrender.com',
   'https://main.d7drqxc8d92jq.amplifyapp.com/',
   'http://146.190.127.243:3000',
+  'http://ubuntu-s-1vcpu-512mb-10gb-sfo3-01',  
   'https://www.cianitasublimados.com',
   'https://www.tiendapalacios.shop',
   'https://tiendapalacios.shop',
