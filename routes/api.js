@@ -33,7 +33,11 @@ function apiRouter(app) {
      router.get('/', (req, res) => {
         res.json({ message: 'API v1 activa' });
     });
-    
+
+     router.get('/healthcheck', (req, res) => {
+        res.status(200).json({ status: 'ok', uptime: process.uptime() });
+    });
+
     router.use('/brands',
         passport.authenticate('jwt', { session: false }),
         checkRoles('almacenero', 'admin'),
